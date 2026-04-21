@@ -8,6 +8,170 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .timeline-wrapper {
+      position: relative;
+      max-width: 1100px;
+      margin: 4rem auto 0;
+      padding: 2rem 0;
+    }
+
+    .timeline-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+      transform: translateX(-50%);
+      opacity: 0.5;
+    }
+
+    .timeline-item {
+      position: relative;
+      width: 50%;
+      padding: 0 2.5rem 3rem 2.5rem;
+    }
+
+    .timeline-item.left {
+      left: 0;
+      text-align: right;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+      text-align: left;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      top: 2rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--surface);
+      box-shadow: 0 0 0 8px rgba(0, 255, 163, 0.08);
+      z-index: 2;
+    }
+
+    .timeline-item.left .timeline-dot {
+      right: -9px;
+    }
+
+    .timeline-item.right .timeline-dot {
+      left: -9px;
+    }
+
+    .timeline-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 1.8rem;
+      backdrop-filter: blur(14px);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      overflow: hidden;
+    }
+
+    .timeline-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.08), transparent 40%);
+      pointer-events: none;
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(0, 255, 163, 0.35);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+    }
+
+    .timeline-year {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid rgba(0, 255, 163, 0.25);
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(0, 255, 163, 0.06);
+    }
+
+    .timeline-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--text);
+    }
+
+    .timeline-place {
+      display: block;
+      margin-bottom: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .timeline-desc {
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 1.2rem;
+    }
+
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .timeline-item.left .timeline-tags {
+      justify-content: flex-end;
+    }
+
+    .timeline-tag {
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-family: 'Space Mono', monospace;
+    }
+
+    @media (max-width: 900px) {
+      .timeline-line {
+        left: 18px;
+        transform: none;
+      }
+
+      .timeline-item,
+      .timeline-item.left,
+      .timeline-item.right {
+        width: 100%;
+        left: 0;
+        text-align: left;
+        padding: 0 0 2rem 3.2rem;
+      }
+
+      .timeline-item.left .timeline-dot,
+      .timeline-item.right .timeline-dot {
+        left: 9px;
+        right: auto;
+      }
+
+      .timeline-item.left .timeline-tags {
+        justify-content: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -15,81 +179,143 @@
   <div id="cursor-ring"></div>
   <div class="grid-bg"></div>
 
-  <!-- NAV -->
   <nav>
     <a class="nav-logo" href="index.html"><span>// </span>Portfolio<span>.sisr</span></a>
     <ul class="nav-links">
       <li><a href="apropos-moi.html">Qui suis-je ?</a></li>
       <li><a href="competences.html">Compétences</a></li>
       <li><a href="projets.html">Projets</a></li>
-      <li><a href="experience.html">Expérience</a></li>
+      <li><a href="experience.html" class="active">Expérience</a></li>
+      <li><a href="procedures.html">Procédures</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-badge">BTS SIO · SISR</div>
   </nav>
 
-  <!-- EXPÉRIENCE -->
-  <section id="experience">
+  <section id="experience" style="background: var(--surface);">
     <div class="section-header reveal">
       <div>
         <div class="section-label">04 · Parcours</div>
-        <h2 class="section-title">Expérience</h2>
+        <h2 class="section-title">Mon parcours chronologique</h2>
       </div>
       <div class="section-count">04</div>
     </div>
 
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-date">Février 2026 — Mars 2026</div>
-        <div class="timeline-title">Technicien helpdesk</div>
-        <div class="timeline-company">Stage · Xefi · Épron</div>
-        <div class="timeline-desc">
-          Participation aux déploiements et au paramétrage de postes de travail, maintenance et résolution de pannes, transfert de données depuis un NAS vers un poste informatique.
+    <div class="timeline-wrapper">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-item left reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2022 → 2025</span>
+          <h3 class="timeline-title">Baccalauréat Professionnel AGOrA</h3>
+          <span class="timeline-place">Parcours scolaire</span>
+          <p class="timeline-desc">
+            Formation orientée gestion administrative des organisations, avec acquisition
+            de méthodes de travail rigoureuses, suivi de dossiers et organisation des tâches.
+            Diplôme obtenu avec <strong>mention Bien</strong>.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">AGOrA</span>
+            <span class="timeline-tag">Gestion</span>
+            <span class="timeline-tag">Organisation</span>
+            <span class="timeline-tag">Mention Bien</span>
+          </div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">2025 — 2027</div>
-        <div class="timeline-title">BTS SIO option SISR</div>
-        <div class="timeline-company">MyDigitalSchool · Caen</div>
-        <div class="timeline-desc">
-          Formation aux infrastructures systèmes et réseaux : architecture TCP/IP, sécurité des SI, virtualisation, administration Linux/Windows, projets en équipe.
+      <div class="timeline-item right reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2024</span>
+          <h3 class="timeline-title">Assistant administratif</h3>
+          <span class="timeline-place">CAP'Sport</span>
+          <p class="timeline-desc">
+            Participation à l’administration et à la coordination des ressources ainsi qu’au
+            suivi d’événements. Cette expérience m’a permis de renforcer ma méthode,
+            ma polyvalence et mon sens de l’organisation.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Coordination</span>
+            <span class="timeline-tag">Organisation</span>
+            <span class="timeline-tag">Suivi</span>
+          </div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">Novembre 2024 — Décembre 2024</div>
-        <div class="timeline-title">Assistant RH</div>
-        <div class="timeline-company">Stage · Soliha · Caen</div>
-        <div class="timeline-desc">
-          Gestion, suivi et mise à jour des dossiers administratifs du personnel et des clients.
+      <div class="timeline-item left reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2024</span>
+          <h3 class="timeline-title">Assistant RH</h3>
+          <span class="timeline-place">Université de Caen</span>
+          <p class="timeline-desc">
+            Suivi et mise à jour des dossiers des étudiants et du personnel. Cette mission
+            a développé ma rigueur, mon sens du détail et mon respect des procédures.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Dossiers</span>
+            <span class="timeline-tag">Méthode</span>
+            <span class="timeline-tag">Rigueur</span>
+          </div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">Juin 2024</div>
-        <div class="timeline-title">Assistant RH</div>
-        <div class="timeline-company">Stage · Université de Caen · Caen</div>
-        <div class="timeline-desc">
-          Suivi et mise à jour des dossiers des étudiants et des membres du personnel.
+      <div class="timeline-item right reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2024</span>
+          <h3 class="timeline-title">Assistant RH</h3>
+          <span class="timeline-place">Soliha</span>
+          <p class="timeline-desc">
+            Gestion, suivi et mise à jour des dossiers administratifs du personnel et des clients.
+            Cette expérience a renforcé mon organisation documentaire et mon autonomie.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Administratif</span>
+            <span class="timeline-tag">Suivi</span>
+            <span class="timeline-tag">Autonomie</span>
+          </div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">Janvier 2024 — Février 2024</div>
-        <div class="timeline-title">Assistant administratif</div>
-        <div class="timeline-company">Stage · CAP'Sport · Hérouville Saint-Clair</div>
-        <div class="timeline-desc">
-          Administration et coordination des ressources ainsi que des événements, avec participation à leur planification et à leur suivi.
+      <div class="timeline-item left reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2025 → 2027</span>
+          <h3 class="timeline-title">BTS SIO option SISR</h3>
+          <span class="timeline-place">Formation actuelle</span>
+          <p class="timeline-desc">
+            Formation spécialisée en <strong>infrastructures, systèmes et réseaux</strong> :
+            administration Linux et Windows, architecture réseau, sécurité, virtualisation
+            et services d’entreprise.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Linux</span>
+            <span class="timeline-tag">Windows Server</span>
+            <span class="timeline-tag">Réseau</span>
+            <span class="timeline-tag">Cybersécurité</span>
+          </div>
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-date">2022 — 2025</div>
-        <div class="timeline-title">Baccalauréat Professionnel AGOrA</div>
-        <div class="timeline-company">Lycée Victor Lépine · Caen · Mention Bien</div>
-        <div class="timeline-desc">
-          Formation à la gestion administrative des PMI/PME.
+      <div class="timeline-item right reveal">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card magnetic">
+          <span class="timeline-year">2026</span>
+          <h3 class="timeline-title">Technicien helpdesk</h3>
+          <span class="timeline-place">Xefi · Stage</span>
+          <p class="timeline-desc">
+            Participation au déploiement, au paramétrage et à la maintenance de postes de travail,
+            résolution d’incidents et transfert de données depuis un NAS vers un poste informatique.
+            Une expérience directement liée au support et à l’environnement technique.
+          </p>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Support</span>
+            <span class="timeline-tag">Maintenance</span>
+            <span class="timeline-tag">Postes de travail</span>
+            <span class="timeline-tag">NAS</span>
+          </div>
         </div>
       </div>
     </div>
