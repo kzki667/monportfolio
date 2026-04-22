@@ -311,7 +311,6 @@
     <ul class="nav-links">
       <li><a href="apropos-moi.html">Qui suis-je ?</a></li>
       <li><a href="competences.html">Compétences</a></li>
-      <li><a href="projets.html">Projets</a></li>
       <li><a href="experience.html">Expérience</a></li>
       <li><a href="procedures.html" class="active">Procédures</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -350,9 +349,9 @@
           </div>
           <div class="terminal-body">
             <div class="terminal-line"><span class="prompt">$</span> <span class="cmd">procedures/</span></div>
-            <div class="terminal-line"><span class="out">├── reseaux/*.pdf</span></div>
-            <div class="terminal-line"><span class="out">├── mise-en-disposition/*.pdf</span></div>
-            <div class="terminal-line"><span class="out">└── systemes/*.pdf</span></div>
+            <div class="terminal-line"><span class="out">├── ad/*.pdf</span></div>
+            <div class="terminal-line"><span class="out">├── docker-web/*.pdf</span></div>
+            <div class="terminal-line"><span class="out">└── systeme/*.pdf</span></div>
           </div>
         </div>
       </div>
@@ -397,8 +396,8 @@
   <script>
     const PROCEDURE_PDFS = [
       {
-        title: "Réseaux",
-        slug: "reseaux",
+        title: "Active Directory",
+        slug: "ad",
         items: [
           { title: "Créer une GPO", file: "creer-une-gpo.pdf" },
           { title: "Délivrer automatiquement un certificat via une GPO", file: "gpo-certif.pdf" },
@@ -408,19 +407,19 @@
         ]
       },
       {
-        title: "Mise en disposition",
-        slug: "mise-en-disposition",
+        title: "Docker & Web",
+        slug: "docker-web",
         items: [
-          { title: "Préparation d’un poste", file: "preparation-poste.pdf" },
-          { title: "Remise d’un poste", file: "remise-poste.pdf" }
+          { title: "Installer Wordpress sur Docker", file: "wordpress-docker.pdf" },
         ]
       },
       {
         title: "Systèmes",
-        slug: "systemes",
+        slug: "systeme",
         items: [
-          { title: "Ajout d’un contrôleur de domaine", file: "ajout-controleur-domaine.pdf" },
-          { title: "Installation VM", file: "installation-vm.pdf" }
+          { title: "Commande Linux", file: "linux-command.pdf" },
+          { title: "Générer une clé SSH avec Github", file: "gen-ssh-github.pdf" },
+          { title: "Se connecter en SSH", file: "connect-ssh.pdf" },
         ]
       }
     ];
