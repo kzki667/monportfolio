@@ -8,6 +8,298 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
+
+  <style>
+    .procedure-modal { cursor: default; }
+
+    .procedures-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+      margin-top: 4rem;
+    }
+
+    .procedure-category-block {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .procedure-category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .procedure-category-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .procedure-category-count {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(0, 255, 163, 0.2);
+      border-radius: 999px;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      background: rgba(0, 255, 163, 0.05);
+    }
+
+    .procedures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .procedure-card {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 1.5rem;
+      color: var(--text);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      backdrop-filter: blur(12px);
+    }
+
+    .procedure-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 255, 163, 0.10), transparent 40%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .procedure-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 255, 163, 0.35);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    }
+
+    .procedure-card__category {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .procedure-card__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 0.8rem;
+      line-height: 1.2;
+      color: var(--text);
+    }
+
+    .procedure-card__filename {
+      color: var(--text-muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      word-break: break-word;
+      opacity: 0.9;
+    }
+
+    .procedure-card__hint {
+      margin-top: 1rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .procedure-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 9999;
+    }
+
+    .procedure-modal.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .procedure-modal__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 8, 20, 0.75);
+      backdrop-filter: blur(8px);
+    }
+
+    .procedure-modal__dialog {
+      position: relative;
+      width: min(1080px, 100%);
+      height: min(86vh, 900px);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 1rem;
+      background: rgba(15, 18, 32, 0.96);
+      border: 1px solid rgba(0, 255, 163, 0.18);
+      border-radius: 26px;
+      padding: 2rem;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      transform: translateY(40px) scale(0.96);
+      opacity: 0;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    .procedure-modal.is-open .procedure-modal__dialog {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .procedure-modal__close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease;
+      z-index: 2;
+    }
+
+    .procedure-modal__close:hover {
+      background: rgba(0, 255, 163, 0.12);
+      transform: rotate(90deg);
+    }
+
+    .procedure-modal__meta {
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(0, 255, 163, 0.08);
+      border: 1px solid rgba(0, 255, 163, 0.18);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: fit-content;
+    }
+
+    .procedure-modal__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      margin: 0;
+      line-height: 1.1;
+      padding-right: 3rem;
+    }
+
+    .procedure-modal__filename {
+      font-family: 'Space Mono', monospace;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+
+    .procedure-modal__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .procedure-modal__actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .pdf-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(0,255,163,0.18);
+      background: rgba(0,255,163,0.08);
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .pdf-btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0,255,163,0.35);
+      background: rgba(0,255,163,0.12);
+    }
+
+    .procedure-modal__viewer {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .procedure-modal__viewer iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: white;
+    }
+
+    .procedure-empty {
+      color: var(--text-muted);
+      font-family: 'Space Mono', monospace;
+      padding: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .procedure-modal {
+        padding: 1rem;
+      }
+
+      .procedure-modal__dialog {
+        height: min(90vh, 900px);
+        padding: 1.25rem;
+        border-radius: 20px;
+      }
+
+      .procedure-card {
+        padding: 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="cursor"></div>
@@ -21,7 +313,7 @@
       <li><a href="competences.html">Compétences</a></li>
       <li><a href="projets.html">Projets</a></li>
       <li><a href="experience.html">Expérience</a></li>
-      <li><a href="procedures.html">Procédures</a></li>
+      <li><a href="procedures.html" class="active">Procédures</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
     <div class="nav-badge">BTS SIO · SISR</div>
@@ -39,12 +331,12 @@
     <div class="procedures-hero reveal">
       <div class="procedures-hero__text">
         <div class="contact-big">
-          Mes <span style="color:var(--accent)">procédures</span><br/>
+          Mes <span style="color:var(--accent)">procédures PDF</span><br/>
           classées par catégorie<span class="blink">_</span>
         </div>
         <p class="procedures-hero__desc">
-          Chaque procédure est enregistrée dans un fichier <code>.md</code> à l'intérieur d'un dossier dédié à sa catégorie.
-          Au clic, une fenêtre s'ouvre avec une animation pour afficher le contenu complet.
+          Chaque procédure est stockée en <code>.pdf</code> dans le dossier de sa catégorie.
+          Au clic sur une carte, le PDF s’ouvre dans une fenêtre avec aperçu intégré.
         </p>
       </div>
 
@@ -58,9 +350,9 @@
           </div>
           <div class="terminal-body">
             <div class="terminal-line"><span class="prompt">$</span> <span class="cmd">procedures/</span></div>
-            <div class="terminal-line"><span class="out">├── reseaux/</span></div>
-            <div class="terminal-line"><span class="out">├── mise-en-disposition/</span></div>
-            <div class="terminal-line"><span class="out">└── systemes/</span></div>
+            <div class="terminal-line"><span class="out">├── reseaux/*.pdf</span></div>
+            <div class="terminal-line"><span class="out">├── mise-en-disposition/*.pdf</span></div>
+            <div class="terminal-line"><span class="out">└── systemes/*.pdf</span></div>
           </div>
         </div>
       </div>
@@ -73,10 +365,24 @@
     <div class="procedure-modal__overlay" data-close-modal></div>
     <div class="procedure-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="procedureModalTitle">
       <button class="procedure-modal__close" type="button" aria-label="Fermer" data-close-modal>×</button>
-      <div class="procedure-modal__meta" id="procedureModalCategory"></div>
-      <h2 class="procedure-modal__title" id="procedureModalTitle">Titre</h2>
-      <div class="procedure-modal__filename" id="procedureModalFilename"></div>
-      <div class="procedure-modal__content markdown-body" id="procedureModalContent"></div>
+
+      <div>
+        <div class="procedure-modal__meta" id="procedureModalCategory"></div>
+        <h2 class="procedure-modal__title" id="procedureModalTitle"></h2>
+        <div class="procedure-modal__filename" id="procedureModalFilename"></div>
+      </div>
+
+      <div class="procedure-modal__toolbar">
+        <div class="procedure-empty">Aperçu PDF intégré</div>
+        <div class="procedure-modal__actions">
+          <a id="procedureOpenPdf" class="pdf-btn" href="#" target="_blank" rel="noopener noreferrer">Ouvrir dans un nouvel onglet</a>
+          <a id="procedureDownloadPdf" class="pdf-btn" href="#" download>Télécharger</a>
+        </div>
+      </div>
+
+      <div class="procedure-modal__viewer">
+        <iframe id="procedurePdfFrame" src="about:blank" title="Aperçu PDF"></iframe>
+      </div>
     </div>
   </div>
 
@@ -89,33 +395,137 @@
   </footer>
 
   <script>
-    window.procedureCatalog = [
+    const PROCEDURE_PDFS = [
       {
-        slug: 'reseaux',
-        title: 'Réseaux',
-        files: [
-          'configuration-vlan.md',
-          'diagnostic-connectivite.md'
+        title: "Réseaux",
+        slug: "reseaux",
+        items: [
+          { title: "Créer une GPO", file: "creer-une-gpo.pdf" },
+          { title: "Délivrer automatiquement un certificat via une GPO", file: "gpo-certif.pdf" },
+          { title: "Implémenter le certificat Active Directory", file: "certificat.pdf" },
+          { title: "Installer un contrôleur de domaine", file: "install-domain.pdf" },
+          { title: "Installer un serveur DHCP", file: "installation-dhcp.pdf" }
         ]
       },
       {
-        slug: 'mise-en-disposition',
-        title: 'Mise en disposition',
-        files: [
-          'preparation-poste.md',
-          'remise-poste.md'
+        title: "Mise en disposition",
+        slug: "mise-en-disposition",
+        items: [
+          { title: "Préparation d’un poste", file: "preparation-poste.pdf" },
+          { title: "Remise d’un poste", file: "remise-poste.pdf" }
         ]
       },
       {
-        slug: 'systemes',
-        title: 'Systèmes',
-        files: [
-          'creation-utilisateur-ad.md',
-          'installation-vm.md'
+        title: "Systèmes",
+        slug: "systemes",
+        items: [
+          { title: "Ajout d’un contrôleur de domaine", file: "ajout-controleur-domaine.pdf" },
+          { title: "Installation VM", file: "installation-vm.pdf" }
         ]
       }
     ];
+
+    function escapeHtml(text) {
+      return String(text)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function openModal() {
+      const modal = document.getElementById('procedureModal');
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('procedureModal');
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      document.getElementById('procedurePdfFrame').src = 'about:blank';
+    }
+
+    function showProcedurePdf(categoryTitle, categorySlug, title, fileName) {
+      const pdfPath = `procedures/${categorySlug}/${fileName}`;
+
+      document.getElementById('procedureModalCategory').textContent = categoryTitle;
+      document.getElementById('procedureModalTitle').textContent = title;
+      document.getElementById('procedureModalFilename').textContent = `${categorySlug}/${fileName}`;
+      document.getElementById('procedurePdfFrame').src = pdfPath;
+      document.getElementById('procedureOpenPdf').href = pdfPath;
+      document.getElementById('procedureDownloadPdf').href = pdfPath;
+      document.getElementById('procedureDownloadPdf').setAttribute('download', fileName);
+
+      openModal();
+    }
+
+    function renderProcedures() {
+      const root = document.getElementById('procedures-root');
+      const groups = PROCEDURE_PDFS.filter(group => group && Array.isArray(group.items) && group.items.length);
+
+      if (!groups.length) {
+        root.innerHTML = '<div class="procedure-empty">Aucune procédure trouvée.</div>';
+        return;
+      }
+
+      root.innerHTML = groups.map(group => `
+        <div class="procedure-category-block">
+          <div class="procedure-category-header">
+            <h3 class="procedure-category-title">${escapeHtml(group.title)}</h3>
+            <div class="procedure-category-count">${group.items.length} procédure${group.items.length > 1 ? 's' : ''}</div>
+          </div>
+
+          <div class="procedures-grid">
+            ${group.items.map((item, index) => `
+              <button
+                type="button"
+                class="procedure-card magnetic"
+                data-group="${escapeHtml(group.slug)}"
+                data-index="${index}">
+                <div class="procedure-card__category">${escapeHtml(group.title)}</div>
+                <h4 class="procedure-card__title">${escapeHtml(item.title)}</h4>
+                <div class="procedure-card__filename">${escapeHtml(group.slug + '/' + item.file)}</div>
+                <p class="procedure-card__hint">Cliquer pour ouvrir le PDF.</p>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.procedure-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const groupSlug = card.dataset.group;
+          const index = Number(card.dataset.index);
+          const group = PROCEDURE_PDFS.find(g => g.slug === groupSlug);
+          const item = group?.items[index];
+          if (!group || !item) return;
+
+          showProcedurePdf(group.title, group.slug, item.title, item.file);
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProcedures();
+
+      document.querySelectorAll('[data-close-modal]').forEach(button => {
+        button.addEventListener('click', closeModal);
+      });
+
+      document.querySelector('.procedure-modal__overlay').addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      });
+    });
   </script>
+
   <script src="js/main.js"></script>
 </body>
 </html>
