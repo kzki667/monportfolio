@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projets personnels · Philibert PHETMANH</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+  <div class="grid-bg"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html"><span>// </span>Portfolio<span>.sisr</span></a>
+    <ul class="nav-links">
+      <li><a href="apropos-moi.html">Qui suis-je ?</a></li>
+      <li><a href="competences.html">Compétences</a></li>
+      <li><a href="experience.html">Expérience</a></li>
+      <li><a href="projets-perso.html" class="active">Projets perso</a></li>
+      <li><a href="procedures.html">Procédures</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-badge">BTS SIO · SISR</div>
+  </nav>
+
+  <!-- SECTION PROJETS PERSONNELS -->
+  <section id="projets-perso">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">03 · Créations</div>
+        <h2 class="section-title">Mes projets</h2>
+      </div>
+      <div class="section-count">03</div>
+    </div>
+
+    <div class="projects-grid">
+
+      <div class="project-card project-card--perso reveal">
+        <div class="project-num">// 01</div>
+        <div class="project-title">Homelab Proxmox</div>
+        <div class="project-desc">
+          Auto‑hébergement et virtualisation d’une infrastructure complète à la maison.
+        </div>
+        <div class="project-tech">
+          <span class="tech-pill">Linux</span>
+          <span class="tech-pill">Grafana</span>
+          <span class="tech-pill">Pterodactyl</span>
+        <span class="tech-pill">WireGuard</span>
+        </div>
+        <a href="projets/proxmox.html" class="project-link">VOIR LE PROJET →</a>
+      </div>
+
+      <!-- 2. EventHub -->
+      <div class="project-card project-card--perso reveal">
+        <div class="project-num">// 02</div>
+        <div class="project-title">Configuration de Pterodactyl</div>
+        <div class="project-desc">
+          Panneau de gestion de serveurs de jeux en conteneurs, avec interface web et isolation Docker
+        </div>
+        <div class="project-tech">
+          <span class="tech-pill">Docker</span>
+          <span class="tech-pill">PHP</span>
+          <span class="tech-pill">MySQL</span>
+          <span class="tech-pill">Linux</span>
+        </div>
+        <a href="projets/pterodactyl.html" class="project-link">VOIR LE PROJET →</a>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-text"><strong>Philibert PHETMANH</strong> · BTS SIO SISR · Portfolio 2025–2027</div>
+    <div class="footer-text" style="text-align:right">
+      Codé avec ♥ &amp; trop de café<br/>
+      <span style="color:var(--accent)">// disponible pour alternance &amp; stage</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1189,6 +1189,21 @@ footer {
   padding: 0;
 }
 
+/* Garantir que les liens "VOIR LE PROJET" soient toujours cliquables */
+.project-card .project-link {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  pointer-events: auto !important;
+  cursor: pointer;
+}
+
+/* Éviter que les pseudo-éléments des cartes ne captent le clic */
+.project-card::before,
+.project-card::after {
+  pointer-events: none;
+}
+
 @media (max-width: 900px) {
   .procedures-hero {
     grid-template-columns: 1fr;
